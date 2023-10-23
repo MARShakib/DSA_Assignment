@@ -86,7 +86,6 @@ class LinkedList:
             print("Empty List!!")
             return
         data_list = []
-        length = self.length()
         cur = self.head
         while cur:
             data_list.append(cur.data)
@@ -94,6 +93,20 @@ class LinkedList:
         for i in range(len(data_list) - 1, -1, -1):
             print(data_list[i], end=" ")
         print(" ")
+
+    ## 5. Find the smallest element in the list and delete it.
+    def find_smallest_and_delete(self):
+        # find smallest
+        if not self.head:
+            return
+        cur = self.head
+        smallest = float("inf")
+        while cur:
+            if cur.data < smallest:
+                smallest = cur.data
+            cur = cur.next
+        # delete smallest
+        self.delete(smallest)
 
 
 linked_list = LinkedList()
@@ -112,4 +125,8 @@ print(f"Middle:{linked_list.find_middle()}")
 linked_list.delete_last_and_add_first()
 linked_list.print_list()
 linked_list.reverse_display()
+linked_list.insert(10)
+linked_list.insert(5)
+linked_list.print_list()
+linked_list.find_smallest_and_delete()
 linked_list.print_list()
