@@ -109,6 +109,7 @@ class LinkedList:
         self.delete(smallest)
 
 
+## For Testing
 linked_list = LinkedList()
 linked_list.insert(5)
 linked_list.insert(3)
