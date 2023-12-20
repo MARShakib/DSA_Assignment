@@ -5,32 +5,50 @@ def dijkstra(graph, start):
     n = len(graph)
     distances = [float("inf")] * n
     distances[start] = 0
+    predecessors = [-1] * n
     heap = [(0, start)]
+
     while heap:
-        cur_distance, cur_node = heapq.heappop(heap)
-        if cur_distance > distances[cur_node]:
+        current_dist, current_node = heapq.heappop(heap)
+
+        if current_dist > distances[current_node]:
             continue
-        for neighbor, weight in enumerate(graph[cur_node]):
+
+        for neighbor, weight in enumerate(graph[current_node]):
             if weight > 0:
-                distance = distances[cur_node] + weight
+                distance = current_dist + weight
                 if distance < distances[neighbor]:
                     distances[neighbor] = distance
+                    predecessors[neighbor] = current_node
                     heapq.heappush(heap, (distance, neighbor))
-    return distances
+
+    return distances, predecessors
+
+
+def get_shortest_path(predecessors, destination):
+    path = []
+    current = destination
+    while current != -1:
+        path.insert(0, current)
+        current = predecessors[current]
+    return path
 
 
 def single_source_all_destination(graph, source):
-    return dijkstra(graph, source)
+    distances, predecessors = dijkstra(graph, source)
+    paths = [get_shortest_path(predecessors, i) for i in range(len(graph))]
+    return distances, paths
 
 
 def single_destination_all_source(graph, destination):
     reversed_graph = [list(row) for row in zip(*graph)]
-    return dijkstra(reversed_graph, destination)
+    distances, predecessors = dijkstra(reversed_graph, destination)
+    paths = [get_shortest_path(predecessors, i) for i in range(len(graph))]
+    return distances, paths
 
 
 # Example usage:
 if __name__ == "__main__":
-    # Example adjacency matrix
     graph = [
         [0, 3, 0, 4, 0],
         [0, 0, 7, 0, 2],
@@ -39,13 +57,15 @@ if __name__ == "__main__":
         [0, 0, 0, 0, 0],
     ]
 
-    source_node = 1
-    destination_node = 3
+    source_node = 0
+    destination_node = 2
 
-    # Single Source All Destination
-    ssad_result = single_source_all_destination(graph, source_node)
-    print(f"Single Source All Destination from node {source_node}: {ssad_result}")
+    ssad_distances, ssad_paths = single_source_all_destination(graph, source_node)
+    print(
+        f"Single Source All Destination from node {source_node}: \ndistances: {ssad_distances} \npath: {ssad_paths}"
+    )
 
-    # Single Destination All Source
-    sdas_result = single_destination_all_source(graph, destination_node)
-    print(f"Single Destination All Source to node {destination_node}: {sdas_result}")
+    sdas_distances, sdas_paths = single_destination_all_source(graph, destination_node)
+    print(
+        f"Single Destination All Source to node {destination_node}: \ndistances: {sdas_distances} \npath: {sdas_paths}"
+    )
