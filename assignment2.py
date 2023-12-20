@@ -44,6 +44,8 @@ def single_destination_all_source(graph, destination):
     reversed_graph = [list(row) for row in zip(*graph)]
     distances, predecessors = dijkstra(reversed_graph, destination)
     paths = [get_shortest_path(predecessors, i) for i in range(len(graph))]
+    for i in range(len(paths)):
+        paths[i] = paths[i][::-1]
     return distances, paths
 
 
@@ -57,8 +59,8 @@ if __name__ == "__main__":
         [0, 0, 0, 0, 0],
     ]
 
-    source_node = 0
-    destination_node = 2
+    source_node = 3
+    destination_node = 4
 
     ssad_distances, ssad_paths = single_source_all_destination(graph, source_node)
     print(
