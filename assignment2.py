@@ -59,7 +59,7 @@ if __name__ == "__main__":
         [0, 0, 0, 0, 0],
     ]
 
-    source_node = 3
+    source_node = 0
     destination_node = 4
 
     ssad_distances, ssad_paths = single_source_all_destination(graph, source_node)
